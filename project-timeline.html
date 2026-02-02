@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cc的项目时间线 | 2024年2-3月</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px 40px;
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 0.9em;
+            color: #718096;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0 40px;
+        }
+        
+        .tab {
+            padding: 20px 30px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #718096;
+        }
+        
+        .tab:hover {
+            color: #667eea;
+            background: #f7fafc;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 甘特图样式 */
+        .gantt-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        
+        .gantt {
+            min-width: 1200px;
+        }
+        
+        .gantt-header {
+            display: grid;
+            grid-template-columns: 150px repeat(8, 1fr);
+            gap: 1px;
+            background: #e2e8f0;
+            margin-bottom: 1px;
+        }
+        
+        .gantt-cell {
+            background: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85em;
+            color: #4a5568;
+        }
+        
+        .gantt-cell.project-name {
+            text-align: left;
+            font-weight: 700;
+            background: #f7fafc;
+        }
+        
+        .gantt-row {
+            display: grid;
+            grid-template-columns: 150px repeat(8, 1fr);
+            gap: 1px;
+            background: #e2e8f0;
+            margin-bottom: 1px;
+        }
+        
+        .gantt-bar {
+            background: white;
+            padding: 20px 5px;
+            position: relative;
+        }
+        
+        .bar {
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .bar.work { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .bar.earphone { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .bar.ip { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .bar.holiday { background: linear-gradient(135deg, #fa709a, #fee140); }
+        
+        /* 周任务样式 */
+        .week-section {
+            margin-bottom: 30px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .week-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .week-header:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+        
+        .week-header h3 {
+            font-size: 1.3em;
+        }
+        
+        .week-progress {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .week-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .week-body.expanded {
+            max-height: 3000px;
+        }
+        
+        .day-card {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .day-card:last-child {
+            border-bottom: none;
+        }
+        
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .day-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .day-date {
+            color: #718096;
+            font-size: 0.9em;
+        }
+        
+        .task-group {
+            margin-bottom: 20px;
+        }
+        
+        .task-group h4 {
+            color: #667eea;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f7fafc;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .task-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+        
+        .task-item.completed {
+            opacity: 0.6;
+        }
+        
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e0;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .task-item.completed .checkbox {
+            background: #667eea;
+            border-color: #667eea;
+        }
+        
+        .checkbox::after {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .task-item.completed .checkbox::after {
+            display: block;
+        }
+        
+        .task-text {
+            flex: 1;
+            line-height: 1.6;
+            color: #2d3748;
+        }
+        
+        .task-time {
+            color: #a0aec0;
+            font-size: 0.85em;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        
+        .milestone {
+            background: linear-gradient(135deg, #ffd89b, #19547b);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .milestone::before {
+            content: "🎯 ";
+        }
+        
+        /* 里程碑视图 */
+        .milestone-timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .milestone-timeline::before {
+            content: "";
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+        }
+        
+        .milestone-item {
+            position: relative;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .milestone-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .milestone-item::before {
+            content: "";
+            position: absolute;
+            left: -33px;
+            top: 25px;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+        
+        .milestone-date {
+            font-size: 0.85em;
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .milestone-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        
+        .milestone-desc {
+            color: #718096;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .stats { grid-template-columns: 1fr; }
+            .tabs { padding: 0 20px; }
+            .tab { padding: 15px 20px; }
+            .content { padding: 20px; }
+            .gantt { min-width: 800px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 项目管理时间线</h1>
+            <p>2024年2月3日 - 3月31日 | 耳机品牌设计 + AI教育IP + 本职工作</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>总天数</h3>
+                <div class="number" id="totalDays">57</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>已完成任务</h3>
+                <div class="number" id="completedTasks">0</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%" id="taskProgress"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>耳机项目进度</h3>
+                <div class="number" id="earphoneProgress">0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>IP项目进度</h3>
+                <div class="number" id="ipProgress">0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('gantt')">甘特图</div>
+            <div class="tab" onclick="switchTab('weekly')">周任务清单</div>
+            <div class="tab" onclick="switchTab('milestones')">里程碑</div>
+        </div>
+        
+        <div class="content">
+            <!-- 甘特图 -->
+            <div id="gantt" class="tab-content active">
+                <div class="gantt-container">
+                    <div class="gantt">
+                        <div class="gantt-header">
+                            <div class="gantt-cell project-name">项目</div>
+                            <div class="gantt-cell">Week 1<br>2/3-9</div>
+                            <div class="gantt-cell">Week 2<br>2/10-14</div>
+                            <div class="gantt-cell">🎊春节<br>2/15-23</div>
+                            <div class="gantt-cell">Week 4<br>2/24-3/2</div>
+                            <div class="gantt-cell">Week 5<br>3/3-9</div>
+                            <div class="gantt-cell">Week 6<br>3/10-16</div>
+                            <div class="gantt-cell">Week 7<br>3/17-23</div>
+                            <div class="gantt-cell">Week 8<br>3/24-31</div>
+                        </div>
+                        
+                        <div class="gantt-row">
+                            <div class="gantt-cell project-name">本职工作</div>
+                            <div class="gantt-bar"><div class="bar work">高强度</div></div>
+                            <div class="gantt-bar"><div class="bar work">收尾</div></div>
+                            <div class="gantt-bar"><div class="bar holiday">放假</div></div>
+                            <div class="gantt-bar"><div class="bar work">复工冲刺</div></div>
+                            <div class="gantt-bar"><div class="bar work">常规</div></div>
+                            <div class="gantt-bar"><div class="bar work">常规</div></div>
+                            <div class="gantt-bar"><div class="bar work">常规</div></div>
+                            <div class="gantt-bar"><div class="bar work">常规</div></div>
+                        </div>
+                        
+                        <div class="gantt-row">
+                            <div class="gantt-cell project-name">耳机项目</div>
+                            <div class="gantt-bar"><div class="bar earphone">调研+概念</div></div>
+                            <div class="gantt-bar"><div class="bar earphone">定稿</div></div>
+                            <div class="gantt-bar"><div class="bar earphone">包装设计</div></div>
+                            <div class="gantt-bar"><div class="bar earphone">详情页</div></div>
+                            <div class="gantt-bar"><div class="bar earphone">打样确认</div></div>
+                            <div class="gantt-bar"><div class="bar earphone">完稿交付</div></div>
+                            <div class="gantt-bar"><div class="bar earphone">尾款</div></div>
+                            <div class="gantt-bar"></div>
+                        </div>
+                        
+                        <div class="gantt-row">
+                            <div class="gantt-cell project-name">IP项目</div>
+                            <div class="gantt-bar"><div class="bar ip">Brief+案例</div></div>
+                            <div class="gantt-bar"><div class="bar ip">概念</div></div>
+                            <div class="gantt-bar"><div class="bar ip">深化设计</div></div>
+                            <div class="gantt-bar"><div class="bar ip">表情系统</div></div>
+                            <div class="gantt-bar"><div class="bar ip">场景应用</div></div>
+                            <div class="gantt-bar"><div class="bar ip">规范手册</div></div>
+                            <div class="gantt-bar"><div class="bar ip">最终交付</div></div>
+                            <div class="gantt-bar"><div class="bar ip">备用</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 周任务清单 -->
+            <div id="weekly" class="tab-content">
+                <!-- Week 1 -->
+                <div class="week-section">
+                    <div class="week-header" onclick="toggleWeek(this)">
+                        <h3>Week 1: 2月3-9日 | 启动周</h3>
+                        <span class="week-progress">0/42 完成</span>
+                    </div>
+                    <div class="week-body">
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周一 2/3</span>
+                                <span class="day-date">启动日</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (7h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成端架设计工作</span>
+                                    <span class="task-time">09:00-18:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">给客户发送Brief确认邮件（包含品牌定位/设计约束/法规要求清单）</span>
+                                    <span class="task-time">19:00-19:30</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">启动竞品分析：收集10个智能耳机品牌资料（天猫/京东截图保存）</span>
+                                    <span class="task-time">19:30-21:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周二 2/4</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (7h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">跟进客户Brief回复，补充未明确的问题</span>
+                                    <span class="task-time">19:00-19:30</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成竞品包装分析表格（对比维度：材质/工艺/信息层级/价格段/特殊工艺）</span>
+                                    <span class="task-time">19:30-21:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周三 2/5</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (7h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (1.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">绘制Logo草图（手绘20+方向，探索图形/字体/组合三大类型）</span>
+                                    <span class="task-time">19:00-21:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (1h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">给IP客户发送角色设定问卷（五维度人格矩阵）</span>
+                                    <span class="task-time">21:00-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周四 2/6</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (7h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (1.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">从手绘草图中筛选3个方向，开始数字化（方向A完成60%）</span>
+                                    <span class="task-time">19:00-21:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (1h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">整理IP案例库（Pinterest/Eagle分类：鹿形象/教育IP/表情系统/Duolingo案例）</span>
+                                    <span class="task-time">21:00-22:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周五 2/7</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (7h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">Logo三方向推进（A/B/C各完成80%）</span>
+                                    <span class="task-time">19:00-21:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周六 2/8</span>
+                                <span class="day-date">集中产出日</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (6h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成Logo三方向最终稿（彩色/黑白/反白版本）</span>
+                                    <span class="task-time">10:00-13:00</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">制作Logo应用mockup（耳机本体/包装/APP图标各3张）</span>
+                                    <span class="task-time">14:00-17:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (3h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成IP Moodboard（风格板/色彩方案/参考案例拼贴）</span>
+                                    <span class="task-time">19:00-22:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周日 2/9</span>
+                                <span class="day-date">交付+准备</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">整理提案文件（PDF+设计说明文档）</span>
+                                    <span class="task-time">10:00-12:00</span>
+                                </div>
+                                <div class="milestone">里程碑：提交耳机Logo概念稿（3方向+设计说明）</div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">开始绘制IP角色概念草图（手绘阶段，探索鹿的造型可能性）</span>
+                                    <span class="task-time">14:00-16:00</span>
+                                </div>
+                                <div class="milestone">里程碑：IP Moodboard完成</div>
+                            </div>
+                            <div class="task-group">
+                                <h4>计划 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">复盘本周进度，规划下周详细任务</span>
+                                    <span class="task-time">16:00-18:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Week 2 -->
+                <div class="week-section">
+                    <div class="week-header" onclick="toggleWeek(this)">
+                        <h3>Week 2: 2月10-14日 | 节前冲刺周</h3>
+                        <span class="week-progress">0/35 完成</span>
+                    </div>
+                    <div class="week-body">
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周一 2/10</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (6h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作（开始收尾）</span>
+                                    <span class="task-time">09:00-17:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (1h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">等待客户Logo反馈（准备修改方案思路）</span>
+                                    <span class="task-time">19:00-20:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">IP角色概念方向A数字化（完成线稿+基础上色）</span>
+                                    <span class="task-time">20:00-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周二 2/11</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (6h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-17:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (1.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">根据客户反馈修改Logo（记录所有修改要求）</span>
+                                    <span class="task-time">19:00-20:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (1.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">IP角色概念方向B数字化</span>
+                                    <span class="task-time">20:30-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周三 2/12</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (6h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-17:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成Logo终稿</span>
+                                    <span class="task-time">19:00-20:00</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">制作VI基础规范（标准色/安全空间/最小使用尺寸/禁用示例）</span>
+                                    <span class="task-time">20:00-21:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (1h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">IP角色概念方向C数字化</span>
+                                    <span class="task-time">21:30-22:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周四 2/13</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (6h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-17:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (1.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">启动包装结构设计（绘制信息层级草图：正面/背面/侧面布局）</span>
+                                    <span class="task-time">19:00-20:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (1.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">IP三方向各配3个基础表情（开心/伤心/思考）</span>
+                                    <span class="task-time">20:30-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周五 2/14</span>
+                                <span class="day-date">节前最后工作日</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (7h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">本职工作最后交付（确保节前完成所有任务）</span>
+                                    <span class="task-time">09:00-12:00</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">整理文件+云端备份+节后工作交接清单</span>
+                                    <span class="task-time">14:00-18:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (3h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成包装方案A（正面+侧面设计完稿）</span>
+                                    <span class="task-time">19:00-22:00</span>
+                                </div>
+                                <div class="milestone">里程碑：耳机Logo定稿并获得客户确认</div>
+                                <div class="milestone">里程碑：IP角色三方向概念稿完成</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Week 3 - 春节 -->
+                <div class="week-section">
+                    <div class="week-header" onclick="toggleWeek(this)">
+                        <h3>Week 3: 2月15-23日 | 🎊春节黄金创作周</h3>
+                        <span class="week-progress">0/28 完成</span>
+                    </div>
+                    <div class="week-body">
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">2/15-16 (初八-初九)</span>
+                                <span class="day-date">适当休息+启动</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (6h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成包装展开图设计（正面/背面/侧面/顶底全部完成）</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">标注所有CCC认证要素位置（标志/认证号/警示语/环保标识）</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (2h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">与客户线上会议确认IP角色方向（准备提案PPT）</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">根据反馈确定最终方向</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">2/17-18 (初十-十一)</span>
+                                <span class="day-date">深化设计</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (5h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">绘制包装刀版线（AI/CDR，专色标注）</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">制作包装3D mockup（使用Boxshot或Photoshop智能对象）</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (3h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">IP角色标准造型深化（正面/侧面/背面三视图）</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">制作比例标注图（头身比/四肢比例/细节尺寸）</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">2/19-20 (十二-十三)</span>
+                                <span class="day-date">详情页+表情系统</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (5h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">详情页框架搭建（9屏内容规划+文案策划大纲）</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">设计详情页第1-3屏（Hero图+核心卖点深挖）</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (3h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">启动表情系统：完成"开心"类6个表情（微笑/大笑/坏笑/爱心眼/害羞/飞吻）</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">2/21-22 (十四-十五)</span>
+                                <span class="day-date">持续推进</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (4h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">设计详情页第4-6屏（参数对比表+细节展示+配色方案）</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (4h/天)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成"伤心"类6个表情（流泪/哭泣/委屈/难过/失落/抹泪）</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成"生气"类6个表情（鼓腮/冒火/炸毛/皱眉/咆哮/不满）</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">2/23 (十六)</span>
+                                <span class="day-date">假期最后一天</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (3h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">包装文件最终检查（出血/刀版线/色彩模式/分辨率）</span>
+                                </div>
+                                <div class="milestone">里程碑：耳机包装初稿完成</div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">检查已完成的12个表情</span>
+                                </div>
+                                <div class="milestone">里程碑：IP角色标准造型+12表情完成</div>
+                            </div>
+                            <div class="task-group">
+                                <h4>计划 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">整理下周复工计划+文件备份</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Week 4 -->
+                <div class="week-section">
+                    <div class="week-header" onclick="toggleWeek(this)">
+                        <h3>Week 4: 2月24-3月2日 | 复工周</h3>
+                        <span class="week-progress">0/32 完成</span>
+                    </div>
+                    <div class="week-body">
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周一 2/24</span>
+                                <span class="day-date">复工第一天</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (8.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">处理复工积压需求+邮件回复</span>
+                                    <span class="task-time">09:00-18:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">设计详情页第7-9屏（使用场景/包装开箱/服务承诺）</span>
+                                    <span class="task-time">19:30-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周二 2/25</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (8.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成"思考"类6个表情（托腮/抬头/灵光/记笔记/推眼镜/沉思）</span>
+                                    <span class="task-time">19:30-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周三 2/26</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (8.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>耳机项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">详情页完稿（调整排版节奏/检查文案/统一视觉风格）</span>
+                                    <span class="task-time">19:30-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周四 2/27</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (8.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>IP项目 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">完成"疑惑"类6个表情（歪头/问号/挠头/不解/惊讶/好奇）</span>
+                                    <span class="task-time">19:30-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周五 2/28</span>
+                                <span class="day-date"></span>
+                            </div>
+                            <div class="task-group">
+                                <h4>本职工作 (8.5h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">端架设计工作</span>
+                                    <span class="task-time">09:00-18:30</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>整理 (2h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">整理耳机项目所有交付文件（源文件/印刷文件/效果图）</span>
+                                    <span class="task-time">19:30-21:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="day-card">
+                            <div class="day-header">
+                                <span class="day-title">周末 3/1-2</span>
+                                <span class="day-date">阶段性交付周</span>
+                            </div>
+                            <div class="task-group">
+                                <h4>周六 - 耳机项目 (10h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">与客户详情页确认会（准备提案演示）</span>
+                                    <span class="task-time">10:00-13:00</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">根据反馈修改详情页</span>
+                                    <span class="task-time">14:00-18:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>周六 - IP项目 (3h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">制作3个IP动效测试（GIF格式，选择最有代表性的表情）</span>
+                                    <span class="task-time">19:00-22:00</span>
+                                </div>
+                            </div>
+                            <div class="task-group">
+                                <h4>周日 - 交付准备 (6h)</h4>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">准备耳机包装打样文件（印刷PDF+刀版图CAD+印刷说明文档）</span>
+                                    <span class="task-time">10:00-13:00</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">制作IP场景应用mockup（登录页/课程页/推送/答题等5组）</span>
+                                    <span class="task-time">14:00-17:00</span>
+                                </div>
+                                <div class="task-item" onclick="toggleTask(this)">
+                                    <div class="checkbox"></div>
+                                    <span class="task-text">规划下周计划</span>
+                                    <span class="task-time">19:00-21:00</span>
+                                </div>
+                                <div class="milestone">里程碑：耳机详情页完稿</div>
+                                <div class="milestone">里程碑：IP表情系统100%完成（24个表情）</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 里程碑视图 -->
+            <div id="milestones" class="tab-content">
+                <div class="milestone-timeline">
+                    <div class="milestone-item">
+                        <div class="milestone-date">2月9日 周日</div>
+                        <div class="milestone-title">耳机Logo概念稿提交</div>
+                        <div class="milestone-desc">交付3个Logo设计方向 + 应用场景mockup + 设计说明文档</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">2月9日 周日</div>
+                        <div class="milestone-title">IP Moodboard完成</div>
+                        <div class="milestone-desc">风格板 + 色彩方案 + 参考案例拼贴</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">2月14日 周五</div>
+                        <div class="milestone-title">耳机Logo定稿</div>
+                        <div class="milestone-desc">Logo最终版本 + VI基础规范手册</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">2月14日 周五</div>
+                        <div class="milestone-title">IP角色概念稿完成</div>
+                        <div class="milestone-desc">3个角色设计方向 + 基础表情系统</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">2月23日 周日</div>
+                        <div class="milestone-title">耳机包装初稿完成</div>
+                        <div class="milestone-desc">包装展开图 + 3D mockup + CCC认证要素标注</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">2月23日 周日</div>
+                        <div class="milestone-title">IP标准造型+12表情</div>
+                        <div class="milestone-desc">角色三视图 + 比例标注 + 开心/伤心/生气类表情</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">3月2日 周日</div>
+                        <div class="milestone-title">耳机详情页完稿</div>
+                        <div class="milestone-desc">9屏详情页设计 + 移动端适配</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">3月2日 周日</div>
+                        <div class="milestone-title">IP表情系统100%</div>
+                        <div class="milestone-desc">24个基础表情 + 3个动效GIF + 5组场景应用mockup</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">3月9日 周日</div>
+                        <div class="milestone-title">耳机详情页定稿</div>
+                        <div class="milestone-desc">客户确认终稿 + 所有源文件整理</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">3月9日 周日</div>
+                        <div class="milestone-title">IP规范手册初稿</div>
+                        <div class="milestone-desc">包含角色设定/视觉规范/表情库/应用示范/禁止事项</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">3月16日 周日</div>
+                        <div class="milestone-title">耳机打样确认通过</div>
+                        <div class="milestone-desc">实物样品检查 + 问题修正 + 批量生产确认</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">3月23日 周日</div>
+                        <div class="milestone-title">耳机项目终稿交付</div>
+                        <div class="milestone-desc">Logo/包装/详情页全部文件 + 项目复盘</div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                        <div class="milestone-date">3月31日 周一</div>
+                        <div class="milestone-title">IP项目最终交付</div>
+                        <div class="milestone-desc">角色规范手册 + 所有源文件 + 应用指导 + 项目验收</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 切换标签页
+        function switchTab(tabName) {
+            // 隐藏所有内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 移除所有标签的激活状态
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示选中的内容
+            document.getElementById(tabName).classList.add('active');
+            
+            // 激活对应的标签
+            event.target.classList.add('active');
+        }
+        
+        // 展开/折叠周
+        function toggleWeek(header) {
+            const body = header.nextElementSibling;
+            body.classList.toggle('expanded');
+        }
+        
+        // 切换任务完成状态
+        function toggleTask(taskItem) {
+            taskItem.classList.toggle('completed');
+            updateProgress();
+            saveProgress();
+        }
+        
+        // 更新进度统计
+        function updateProgress() {
+            const allTasks = document.querySelectorAll('.task-item');
+            const completedTasks = document.querySelectorAll('.task-item.completed');
+            const completedCount = completedTasks.length;
+            const totalCount = allTasks.length;
+            const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+            
+            document.getElementById('completedTasks').textContent = completedCount;
+            document.getElementById('taskProgress').style.width = percentage + '%';
+            
+            // 更新每周进度
+            document.querySelectorAll('.week-section').forEach(week => {
+                const weekTasks = week.querySelectorAll('.task-item');
+                const weekCompleted = week.querySelectorAll('.task-item.completed');
+                const weekProgress = week.querySelector('.week-progress');
+                weekProgress.textContent = `${weekCompleted.length}/${weekTasks.length} 完成`;
+            });
+        }
+        
+        // 保存进度到localStorage
+        function saveProgress() {
+            const completed = [];
+            document.querySelectorAll('.task-item.completed').forEach((task, index) => {
+                const text = task.querySelector('.task-text').textContent;
+                completed.push(text);
+            });
+            localStorage.setItem('projectProgress', JSON.stringify(completed));
+        }
+        
+        // 加载保存的进度
+        function loadProgress() {
+            const saved = localStorage.getItem('projectProgress');
+            if (saved) {
+                const completed = JSON.parse(saved);
+                document.querySelectorAll('.task-item').forEach(task => {
+                    const text = task.querySelector('.task-text').textContent;
+                    if (completed.includes(text)) {
+                        task.classList.add('completed');
+                    }
+                });
+                updateProgress();
+            }
+        }
+        
+        // 页面加载时执行
+        window.onload = function() {
+            loadProgress();
+            updateProgress();
+            
+            // 默认展开第一周
+            document.querySelector('.week-body').classList.add('expanded');
+        };
+    </script>
+</body>
+</html>
